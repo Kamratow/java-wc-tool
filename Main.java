@@ -1,5 +1,9 @@
+import com.kamratow.ccwctool.Ccwctool;
+
 public class Main {
     public static void main(String a[]) {
-        System.out.println("Hello, this is wc-tool");
+        Ccwctool ccwctool = new Ccwctool();
+
+        ccwctool.sayHi();
     }
 }
