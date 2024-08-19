@@ -1,21 +1,66 @@
 package com.kamratow.ccwctool;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class Ccwctool {
-    public void startToool() {
-        Scanner scanner = new Scanner(System.in);
+    private void showFileBytes(String filePath) {
+        try {
+            String userDirectory = System.getProperty("user.dir");
+            String fullFilePath = userDirectory + "/" + filePath;
 
-        System.out.println("ccwc tool started, please provide command to run");
+            File file = new File(fullFilePath);
 
-        String userInput = scanner.nextLine();
+            if (!file.exists()) {
+                throw new IllegalArgumentException("It looks like file doesn't exist. Please check this and try again");
+            }
 
-        if (userInput.startsWith("ccwc")) {
-            System.out.println("ccwc command running...");
-        } else {
-            System.out.println("Unable to run provided command - please check your input and try again");
+            System.out.println(file.length() + " " + filePath);
+
+        } catch (Exception e) {
+            System.out.println("Couldn't read the file. Please check your input and try again");
+        }
+    }
+
+    private void runCommand(String[] commandArgs) throws IllegalArgumentException {
+        if (commandArgs.length < 3) {
+            throw new IllegalArgumentException("Cannot read file path - please check your input");
         }
 
-        scanner.close();
+        var filePath = commandArgs[2];
+
+        switch (commandArgs[1]) {
+            case "-c":
+                showFileBytes(filePath);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void startToool() {
+        System.out.println("ccwc tool started, please provide command to run");
+        System.out.println();
+
+        String userInput = "";
+
+        try (Scanner scanner = new Scanner(System.in)) {
+            userInput = scanner.nextLine();
+        } catch (Exception e) {
+            System.out.println("Something went wrong. Please check your input and try again");
+        }
+
+        String[] commandArgsPassedByUser = userInput.split(" ");
+
+        try {
+            if (!commandArgsPassedByUser[0].equals("ccwc")) {
+                throw new IllegalArgumentException("Your commad should start with \"ccwc\"");
+            }
+
+            runCommand(commandArgsPassedByUser);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
