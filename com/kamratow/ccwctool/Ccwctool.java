@@ -1,6 +1,8 @@
 package com.kamratow.ccwctool;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.Scanner;
 
 public class Ccwctool {
@@ -22,6 +24,23 @@ public class Ccwctool {
         }
     }
 
+    private void showFileLinesCount(String filePath) {
+        String userDirectory = System.getProperty("user.dir");
+        String fullFilePath = userDirectory + "/" + filePath;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fullFilePath))) {
+            int numberOfLines = 0;
+
+            while (br.readLine() != null) {
+                numberOfLines++;
+            }
+
+            System.out.println(numberOfLines + " " + filePath);
+        } catch (Exception e) {
+            System.out.println("Couldn't read the file. Please check your input and try again");
+        }
+    }
+
     private void runCommand(String[] commandArgs) throws IllegalArgumentException {
         if (commandArgs.length < 3) {
             throw new IllegalArgumentException("Cannot read file path - please check your input");
@@ -33,7 +52,9 @@ public class Ccwctool {
             case "-c":
                 showFileBytes(filePath);
                 break;
-
+            case "-l":
+                showFileLinesCount(filePath);
+                break;
             default:
                 break;
         }
