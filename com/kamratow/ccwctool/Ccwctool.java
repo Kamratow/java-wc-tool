@@ -51,13 +51,13 @@ public class Ccwctool {
     }
 
     private void runCommand() throws IllegalArgumentException {
-        if (commandArgs.length < 3) {
+        if (commandArgs.length < 2) {
             throw new IllegalArgumentException("Cannot read file path - please check your input");
         }
 
-        var filePath = commandArgs[2];
+        var filePath = commandArgs[1];
 
-        switch (commandArgs[1]) {
+        switch (commandArgs[0]) {
             case "-c":
                 showFileBytes(filePath);
                 break;
@@ -76,14 +76,6 @@ public class Ccwctool {
         System.out.println("ccwc tool started");
         System.out.println();
 
-        try {
-            if (!commandArgs[0].equals("ccwc")) {
-                throw new IllegalArgumentException("Your commad should start with \"ccwc\"");
-            }
-
-            runCommand();
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+        runCommand();
     }
 }
