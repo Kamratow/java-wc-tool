@@ -3,9 +3,14 @@ package com.kamratow.ccwctool;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.Scanner;
 
 public class Ccwctool {
+    private String[] commandArgs;
+
+    public Ccwctool(String[] commandArgs) {
+        this.commandArgs = commandArgs;
+    }
+
     private void showFileBytes(String filePath) {
         try {
             String userDirectory = System.getProperty("user.dir");
@@ -41,7 +46,11 @@ public class Ccwctool {
         }
     }
 
-    private void runCommand(String[] commandArgs) throws IllegalArgumentException {
+    private void showFileWordCount(String filePath) {
+
+    }
+
+    private void runCommand() throws IllegalArgumentException {
         if (commandArgs.length < 3) {
             throw new IllegalArgumentException("Cannot read file path - please check your input");
         }
@@ -55,31 +64,24 @@ public class Ccwctool {
             case "-l":
                 showFileLinesCount(filePath);
                 break;
+            case "-w":
+                showFileWordCount(filePath);
+                break;
             default:
                 break;
         }
     }
 
     public void startToool() {
-        System.out.println("ccwc tool started, please provide command to run");
+        System.out.println("ccwc tool started");
         System.out.println();
 
-        String userInput = "";
-
-        try (Scanner scanner = new Scanner(System.in)) {
-            userInput = scanner.nextLine();
-        } catch (Exception e) {
-            System.out.println("Something went wrong. Please check your input and try again");
-        }
-
-        String[] commandArgsPassedByUser = userInput.split(" ");
-
         try {
-            if (!commandArgsPassedByUser[0].equals("ccwc")) {
+            if (!commandArgs[0].equals("ccwc")) {
                 throw new IllegalArgumentException("Your commad should start with \"ccwc\"");
             }
 
-            runCommand(commandArgsPassedByUser);
+            runCommand();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
